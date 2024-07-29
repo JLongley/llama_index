@@ -342,6 +342,7 @@ class ElasticsearchStore(BasePydanticVectorStore):
         metadatas: List[dict] = []
         ids: List[str] = []
         for node in nodes:
+            print("\n\nnode.get_embedding()", node.get_embedding())
             ids.append(node.node_id)
             embeddings.append(node.get_embedding())
             texts.append(node.get_content(metadata_mode=MetadataMode.NONE))
@@ -351,8 +352,10 @@ class ElasticsearchStore(BasePydanticVectorStore):
             self._store.num_dimensions = len(embeddings[0])
 
         # Omit the vectors argument entirely if embeddings aren't generated.
-        if not any(embeddings):
-            embeddings = None
+        # if not any(embeddings):
+        #     embeddings = None
+
+        embeddings = None
 
         return await self._store.add_texts(
             texts=texts,
